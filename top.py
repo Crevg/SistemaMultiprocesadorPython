@@ -22,8 +22,9 @@ from tkinter import *
 
 ########################Inicializacion de variables
 
-base_cpu_labels = ["CPU# ", "Instrucción actual: ", "Instrucción siguiente: " , "Bloque ", "Bloque ", "Bloque ", "Bloque "] #Lista de los labels a actualizar de CPU
+base_cpu_labels = ["CPU# ", "Instrucción actual: ", "Instrucción siguiente: " , "Bloque ", "Bloque ", "Bloque ", "Bloque ", "Instrucción anterior: "] #Lista de los labels a actualizar de CPU
 nextInstruction = ["","","",""] #Lista de instrucciones siguientes
+prevInstruction = ["","","",""] #Lista de instrucciones anteriores
 cpu_list = []  #Lista de CPUs
 cache_list = [] #Lista de caches
 control_list = [] #Lista de controladores
@@ -79,14 +80,21 @@ def setVars():
         setVarsAux(i+1, 4, bloques[1])
         setVarsAux(i+1, 5, bloques[2])
         setVarsAux(i+1, 6, bloques[3])
+        setVarsAux(i+1, 7, cpu_list[i].getAnteriorInstruccion())
         nextInstruction[i] = cpu_list[i].getSiguienteInstruccion()
+        prevInstruction[i] = cpu_list[i].getAnteriorInstruccion()
     setLabelsMemoria()
 
 #Actualiza el label indicado
 def setVarsAux(cpuN, index, CPUinfo):
+    #Extra field
     updated = base_cpu_labels[index] + CPUinfo
-    if app.getCPULabels(cpuN)[index]["text"] != updated:
-        app.getCPULabels(cpuN)[index]["text"] = base_cpu_labels[index] + CPUinfo
+    print(updated)
+    if (index == 7):
+        app.getCPULabels(cpuN)[10]["text"] = base_cpu_labels[index] + CPUinfo
+    else:
+        if app.getCPULabels(cpuN)[index]["text"] != updated:
+            app.getCPULabels(cpuN)[index]["text"] = base_cpu_labels[index] + CPUinfo
 
 #Set labels de memoria
 def setLabelsMemoria():

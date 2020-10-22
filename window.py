@@ -98,6 +98,8 @@ class App:
         listaLabels = [] 
         listaLabels.append(Label(frame, bg=self.bgColor, anchor='w', text= "CPU# " + str(number)))  #0
         listaLabels[-1].pack(side=TOP, fill=X)
+        prevInstruc = Label(frame, bg=self.bgColor, anchor='w') #10
+        prevInstruc.pack(side=TOP, fill=X)
         listaLabels.append(Label(frame, bg=self.bgColor, anchor='w')) #1
         listaLabels[-1].pack(side=TOP, fill=X)
         listaLabels.append(Label(frame, bg=self.bgColor,  anchor='w')) #2
@@ -118,6 +120,7 @@ class App:
         listaLabels[-1].pack(side=LEFT, anchor="nw", padx=5, ipady=3)
         listaLabels.append(Button(frame,bg=self.buttonColor, relief=FLAT,  fg = "white", highlightbackground="black", text="Agregar")) #9
         listaLabels[-1].pack(side=LEFT, anchor="n", padx=5)       
+        listaLabels.append(prevInstruc) # adding 10
 
         return listaLabels
 

@@ -17,13 +17,14 @@ class Processor(threading.Thread):
     ##control: Referencia al control
     ##ciclos: Cantidad de ciclos: 1 por defecto
     #No recibe pero incializa:
-    ##instruccion actual y siguiente, bandera de pausa y bandera de corriendo
+    ##instruccion actual, siguiente y anterior, bandera de pausa y bandera de corriendo
     def __init__(self, refresh, number, runType, enable, cache, control, cycles=1):
         threading.Thread.__init__(self)
         self.number = number
         self.running = False
         self.instruccionActual = ""
-        self.siguienteInstruccion = ""        
+        self.siguienteInstruccion = ""   
+        self.anteriorInstruccion = ""     
         self.cache = cache
         self.control =  control
         self.runType = runType
@@ -42,6 +43,7 @@ class Processor(threading.Thread):
         if (self.siguienteInstruccion == ""):
             self.ejecutarInstruccion()
         while(self.running and (shouldContinue or (i < self.cycles))):
+            print(self.anteriorInstruccion)
             if self.runType == 1 and i >= self.cycles:
                 shouldContinue = False
                 break
@@ -49,6 +51,7 @@ class Processor(threading.Thread):
             i += 1
             if (self.pausa):
                 break
+        self.anteriorInstruccion = self.instruccionActual
         self.instruccionActual = ""
         self.refresh()
         self.running = False
@@ -69,6 +72,10 @@ class Processor(threading.Thread):
 
     def setSiguienteInstruccion(self, instr):
         self.siguienteInstruccion = instr
+
+    def getAnteriorInstruccion(self):
+        return self.anteriorInstruccion
+
     #Genera la siguiente instruccion de acuerdo a distribucion normal
     #Si es necesario genera direccion y valor para sus instrucciones
     def generarInstruccion(self):
@@ -100,6 +107,7 @@ class Processor(threading.Thread):
 
     #Ejecuta la instruccion siguiente
     def ejecutarInstruccion(self):
+        self.anteriorInstruccion = self.instruccionActual
         self.instruccionActual = self.siguienteInstruccion
         self.siguienteInstruccion = self.generarInstruccion()
         self.refresh()
