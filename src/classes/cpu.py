@@ -43,7 +43,6 @@ class Processor(threading.Thread):
         if (self.siguienteInstruccion == ""):
             self.ejecutarInstruccion()
         while(self.running and (shouldContinue or (i < self.cycles))):
-            print(self.anteriorInstruccion)
             if self.runType == 1 and i >= self.cycles:
                 shouldContinue = False
                 break
@@ -92,12 +91,12 @@ class Processor(threading.Thread):
         else:
             dirDeBloque = np.random.poisson(2,1)
             if dirDeBloque <= 3:
-                pass
-                #direccion = USE CACHE[dirDeBloque]
+                if self.cache.leerBloque(bin(dirDeBloque[0])[2:].zfill(4)) !=  None:
+                    direccion = dirDeBloque[0]
+                else:
+                    direccion = random.randrange(0, 15)
             else:
-                pass
-                #Direccion = DO NOT USE CACHE (map 4 cache address out of the dist)
-            direccion = random.randrange(0, 15)
+                direccion = random.randrange(0, 15)
             op = op + " " + bin(direccion)[2:].zfill(4)
             if (op[:5] == "WRITE"):
                 op = op + ";"
