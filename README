@@ -1,0 +1,9 @@
+Project 1 Computer Architecture II
+
+Shared memory, 4 processors, Simultaneous Multiprocessing system build on python.
+
+Every processor is a threading.Thread
+
+MOESI algorithm for cache coherence
+
+Mutex for bus access.
